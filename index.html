@@ -1,26 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Drawing with Hand Gestures</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+  <style>
+    .output_canvas {
+      width: 100%;
+      height: auto;
+      border: 1px solid black;
+      transform: scaleX(-1);
+    }
+    .controls {
+      margin-top: 10px;
+    }
+    .video-container {
+      display: none; /* Hide the video element */
+    }
+  </style>
 </head>
 
 <body>
-  <div class="container">
-    <video class="input_video"></video>
-    <canvas class="output_canvas" width="1280px" height="720px"></canvas>
-    <div class="controls">
-      <button id="clearButton">Clear</button>
-      <button id="saveButton">Save</button>
-      <button id="playButton">Play</button>
-      <button id="pauseButton">Pause</button>
+  <div class="container mt-4">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-10">
+        <canvas class="output_canvas" width="1920" height="1080"></canvas>
+      </div>
+    </div>
+
+    <div class="row justify-content-center controls">
+      <div class="col-12 col-md-2 mb-2">
+        <button id="clearButton" class="btn btn-danger w-100">Clear</button>
+      </div>
+      <div class="col-12 col-md-2 mb-2">
+        <button id="saveButton" class="btn btn-success w-100">Save</button>
+      </div>
+      <div class="col-12 col-md-2 mb-2">
+        <button id="playButton" class="btn btn-primary w-100">Play</button>
+      </div>
+      <div class="col-12 col-md-2 mb-2">
+        <button id="pauseButton" class="btn btn-warning w-100">Pause</button>
+      </div>
     </div>
   </div>
+
+  <!-- Hidden video element for camera input -->
+  <div class="video-container">
+    <video class="input_video"></video>
+  </div>
+
   <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>

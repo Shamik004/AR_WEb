@@ -22,9 +22,20 @@ body {
 
 .output_canvas {
   border: 1px solid #ccc;
-  width: 640px; /* Adjust as needed */
-  height: 360px; /* Adjust as needed */
-  transform: scaleX(-1);
+  width: 100%; /* Full width */
+  max-width: 640px; /* Max width for larger screens */
+  height: auto; /* Maintains aspect ratio */
+  aspect-ratio: 16 / 9; /* Maintains 16:9 ratio */
+  transform: scaleX(-1); /* Flip horizontally */
+  display: block;
+  margin: 0 auto; /* Center the canvas */
+}
+
+@media (max-width: 768px) {
+  .output_canvas {
+    max-width: 100%; /* Make it full width on smaller screens */
+    height: auto; /* Auto-adjust height */
+  }
 }
 
 

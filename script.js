@@ -55,7 +55,6 @@ function onResults(results) {
       );
 
       const closeDistance = 100;
-      console.log(distance)
       if (distance < closeDistance) {
         drawing = false; // Pause drawing
       } else {

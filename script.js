@@ -2,20 +2,31 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
 import { getStorage, ref, uploadString } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-storage.js";
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyDbZxD1V7ut37qnV5XHt6Hgmk5WzVUVCGI",
-  authDomain: "webapp-f6e6e.firebaseapp.com",
-  projectId: "webapp-f6e6e",
-  storageBucket: "webapp-f6e6e.appspot.com",
-  messagingSenderId: "745591086141",
-  appId: "1:745591086141:web:d075503c679755ac291e54",
-  measurementId: "G-0041K1HG0J"
-};
+// Get Firebase configuration from server
+let firebaseConfig;
+let app;
+let storage;
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const storage = getStorage(app);
+async function initializeFirebase() {
+  try {
+    const response = await fetch('/api/firebase-config');
+    firebaseConfig = await response.json();
+    
+    // Initialize Firebase
+    app = initializeApp(firebaseConfig);
+    storage = getStorage(app);
+    
+    console.log('Firebase initialized successfully');
+  } catch (error) {
+    console.error('Error initializing Firebase:', error);
+  }
+}
+
+// Initialize Firebase when the script loads
+await initializeFirebase();
+
+const urlParams = new URLSearchParams(window.location.search);
+const character = urlParams.get('character');
 
 const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
@@ -80,6 +91,11 @@ function onResults(results) {
 }
 
 async function saveDrawing() {
+  if (!storage) {
+    console.error('Firebase not initialized');
+    return;
+  }
+
   // Create a temporary canvas to save the drawing
   const tempCanvas = document.createElement('canvas');
   const tempCtx = tempCanvas.getContext('2d');
@@ -108,7 +124,7 @@ async function saveDrawing() {
   const image = tempCanvas.toDataURL('image/png');
 
   // Upload to Firebase Storage
-  const storageRef = ref(storage, `drawings/drawing_${timestamp}.png`);
+  const storageRef = ref(storage, `drawings/${character}/drawing_${timestamp}.png`);
   try {
     await uploadString(storageRef, image, 'data_url');
     console.log('Upload successful!');
@@ -116,9 +132,9 @@ async function saveDrawing() {
     console.error('Upload failed:', error);
   }
 
-    const link = document.createElement('a');
-    link.href = image;
-    link.download = `drawing_${timestamp}.png`;
+  const link = document.createElement('a');
+  link.href = image;
+  link.download = `drawing_${timestamp}.png`;
   link.click();
 }
 
